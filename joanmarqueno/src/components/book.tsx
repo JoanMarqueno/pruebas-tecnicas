@@ -1,24 +1,39 @@
-
-// import BookData from '../model/bookData'
-
+import React from "react";
+import Heart from "./iconoCorazon";
 
 type Props = {
-    book: BookData
-    addBook: (book: BookData) => void;     
-}
+  book: BookData;
+  addBook: (book: BookData) => void;
+  startDrag: (evt: React.DragEvent<HTMLDivElement>, book: BookData) => void;
+};
 
-
-
-function Book ({ book, addBook }: Props) {
-
+function Book({ book, addBook, startDrag }: Props) {
+  const handleAddBook = () => {
+    addBook(book);
+  };
 
   return (
-   
-    <section className="shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] hover:shadow-lg md:shadow-lg">
-        <img onClick= {() => addBook(book)} className="object-scale-down " src={book.cover} alt={book.title} />
-    </section>
-    
-  )
+    <div
+      className="relative"
+      id="booksToShow"
+      draggable
+      onDragStart={(evt) => startDrag(evt, book)}
+    >
+      <div className="rounded overflow-hidden shadow-lg">
+        <img
+          className="w-full h-48 object-cover"
+          src={book.cover}
+          alt={book.title}
+        />
+        <span
+          className="cursor-pointer m-1 px-2 inline-block tracking-wide absolute top-0 right-0"
+          onClick={handleAddBook}
+        >
+          <Heart isFavorite={false}></Heart>
+        </span>
+      </div>
+    </div>
+  );
 }
 
-export default Book
+export default Book;
